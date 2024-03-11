@@ -107,6 +107,42 @@ describe('Series', () => {
 		expect(series.toArray({ includeNulls: false })).to.eql([10, 20]);
 	});
 
+
+	it('Series.toArray({includeUndefined: true}) does not strip undefined values', () => {
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toArray({ includeUndefined: true })).to.eql([10, undefined, 20, undefined]);
+	});
+
+	it('Series.toArray({includeUndefined: true}) strips null values', () => {
+
+		var series = new Series([10, null, 20, null]);
+		expect(series.toArray({ includeUndefined: true })).to.eql([10, 20]);
+	});
+
+	it('Series.toArray({includeUndefined: false}) strips undefined values', () => {
+
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toArray({ includeUndefined: false })).to.eql([10, 20]);
+	});
+
+	it('Series.toArray({includeUndefined: false}) strips null values', () => {
+
+		var series = new Series([10, null, 20, null]);
+		expect(series.toArray({ includeUndefined: false })).to.eql([10, 20]);
+	});
+
+	it('Series.toArray({includeNulls: true, includeUndefined: true}) does not strip null and undefined values', () => {
+
+		var series = new Series([undefined, 10, null, 20, null, undefined]);
+		expect(series.toArray({ includeNulls: true, includeUndefined: true })).to.eql([undefined, 10, null, 20, null, undefined]);
+	});
+
+	it('Series.toArray({includeNulls: false, includeUndefined: false}) strips null and undefined values', () => {
+
+		var series = new Series([undefined, 10, null, 20, null, undefined]);
+		expect(series.toArray({ includeNulls: false, includeUndefined: false })).to.eql([10, 20]);
+	});
+
 	it('Series.toPairs strips undefined values', () => {
 
 		var series = new Series([10, undefined, 20, undefined]);
@@ -128,7 +164,7 @@ describe('Series', () => {
 	it('Series.toPairs({includeNulls: true}) does not strip null values', () => {
 
 		var series = new Series([10, null, 20, null]);
-		expect(series.toPairs({includeNulls: true})).to.eql([
+		expect(series.toPairs({ includeNulls: true })).to.eql([
 			[0, 10],
 			[1, null],
 			[2, 20],
@@ -139,7 +175,7 @@ describe('Series', () => {
 	it('Series.toPairs({includeNulls: true}) strips undefined values', () => {
 
 		var series = new Series([10, undefined, 20, undefined]);
-		expect(series.toPairs({includeNulls: true})).to.eql([
+		expect(series.toPairs({ includeNulls: true })).to.eql([
 			[0, 10],
 			[2, 20]
 		]);
@@ -148,7 +184,7 @@ describe('Series', () => {
 	it('Series.toPairs({includeNulls: false}) strips null values', () => {
 
 		var series = new Series([10, null, 20, null]);
-		expect(series.toPairs({includeNulls: false})).to.eql([
+		expect(series.toPairs({ includeNulls: false })).to.eql([
 			[0, 10],
 			[2, 20]
 		]);
@@ -157,9 +193,68 @@ describe('Series', () => {
 	it('Series.toPairs({includeNulls: false}) strips undefined values', () => {
 
 		var series = new Series([10, undefined, 20, undefined]);
-		expect(series.toPairs({includeNulls: false})).to.eql([
+		expect(series.toPairs({ includeNulls: false })).to.eql([
 			[0, 10],
 			[2, 20]
+		]);
+	});
+
+	it('Series.toPairs({includeUndefined: true}) does not strip undefined values', () => {
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toPairs({ includeUndefined: true })).to.eql([
+			[0, 10],
+			[1, undefined],
+			[2, 20],
+			[3, undefined],
+		]);
+	});
+
+	it('Series.toPairs({includeUndefined: true}) strips null values', () => {
+
+		var series = new Series([10, null, 20, null]);
+		expect(series.toPairs({ includeUndefined: true })).to.eql([
+			[0, 10],
+			[2, 20],
+		]);
+	});
+
+	it('Series.toPairs({includeUndefined: false}) strips undefined values', () => {
+
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toPairs({ includeUndefined: false })).to.eql([
+			[0, 10],
+			[2, 20],
+		]);
+	});
+
+	it('Series.toPairs({includeUndefined: false}) strips null values', () => {
+
+		var series = new Series([10, null, 20, null]);
+		expect(series.toPairs({ includeUndefined: false })).to.eql([
+			[0, 10],
+			[2, 20],
+		]);
+	});
+
+	it('Series.toPairs({includeNulls: true, includeUndefined: true}) does not strip null and undefined values', () => {
+
+		var series = new Series([undefined, 10, null, 20, null, undefined]);
+		expect(series.toPairs({ includeNulls: true, includeUndefined: true })).to.eql([
+			[0, undefined],
+			[1, 10],
+			[2, null],
+			[3, 20],
+			[4, null],
+			[5, undefined],
+		]);
+	});
+
+	it('Series.toPairs({includeNulls: false, includeUndefined: false}) strips null and undefined values', () => {
+
+		var series = new Series([undefined, 10, null, 20, null, undefined]);
+		expect(series.toPairs({ includeNulls: false, includeUndefined: false })).to.eql([
+			[1, 10],
+			[3, 20],
 		]);
 	});
 

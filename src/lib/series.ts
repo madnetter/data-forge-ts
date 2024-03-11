@@ -394,7 +394,7 @@ export interface ISeries<IndexT = number, ValueT = any> extends Iterable<ValueT>
     * const values = series.toArray();
     * </pre>
     */
-    toArray(options?: { includeNulls?: boolean }): ValueT[];
+    toArray(options?: { includeNulls?: boolean, includeUndefined?: boolean }): ValueT[];
 
     /**
      * Retreive the index, values pairs from the series as an array.
@@ -408,7 +408,7 @@ export interface ISeries<IndexT = number, ValueT = any> extends Iterable<ValueT>
      * const pairs = series.toPairs();
      * </pre>
      */
-    toPairs(options?: { includeNulls?: boolean }): ([IndexT, ValueT])[];
+    toPairs(options?: { includeNulls?: boolean, includeUndefined?: boolean }): ([IndexT, ValueT])[];
 
     /**
      * Convert the series to a JavaScript object.
@@ -2913,10 +2913,11 @@ export class Series<IndexT = number, ValueT = any> implements ISeries<IndexT, Va
     * const values = series.toArray();
     * </pre>
     */
-    toArray(options?: { includeNulls?: boolean }): any[] {
+    toArray(options?: { includeNulls?: boolean, includeUndefined?: boolean }): any[] {
         const values = [];
         for (const value of this.getContent().values) {
-            if (options && options.includeNulls && value !== undefined) {
+            if (options && ((options.includeNulls && value !== undefined) ||
+                (options.includeUndefined && value !== null))) {
                 values.push(value);
             } else if (value !== undefined && value !== null) {
                 values.push(value);
@@ -2937,12 +2938,14 @@ export class Series<IndexT = number, ValueT = any> implements ISeries<IndexT, Va
      * const pairs = series.toPairs();
      * </pre>
      */
-    toPairs(options?: { includeNulls?: boolean }): ([IndexT, ValueT])[] {
+    toPairs(options?: { includeNulls?: boolean, includeUndefined?: boolean }): ([IndexT, ValueT])[] {
         const pairs = [];
         for (const pair of this.getContent().pairs) {
-            if (options && options.includeNulls && pair[1] !== undefined) {
+            let value = pair[1];
+            if (options && ((options.includeNulls && value !== undefined) ||
+                (options.includeUndefined && value !== null))) {
                 pairs.push(pair);
-            } else if (pair[1] !== undefined && pair[1] !== null) {
+            } else if (value !== undefined && value !== null) {
                 pairs.push(pair);
             }
         }
