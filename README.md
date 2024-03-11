@@ -1,48 +1,22 @@
 # Data-Forge
 
+Fork of the Data-Forge project.
+
+See the [official repository](https://github.com/data-forge/data-forge-ts) for the original data forge project source code.
+
+See the [official registry](https://www.npmjs.com/package/data-forge) for the original data forge npm package.
+
+Please [support](https://www.codecapers.com.au/about#support-my-work) the original authors work!
+
+
 The JavaScript data transformation and analysis toolkit inspired by Pandas and LINQ.
 
 *Implemented* in TypeScript.<br>
 *Used* in JavaScript ES5+ or TypeScript.
 
-To learn more about Data-Forge [visit the home page](http://data-forge-js.com/).
-
-Read about <a target="_blank" href="http://js4ds.org/#s:dataforge">Data-Forge for data science</a> in the book 
-<a target="_blank" href="http://js4ds.org">JavaScript for Data Science</a>.
-
-Love this? Please star this repo and [click here to support my work](https://www.codecapers.com.au/about#support-my-work)
-
-[![Build Status](https://travis-ci.org/data-forge/data-forge-ts.svg?branch=master)](https://travis-ci.org/data-forge/data-forge-ts)
-[![npm version](https://badge.fury.io/js/data-forge.svg)](https://badge.fury.io/js/data-forge)
-[![License](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-
-**Please note** that this TypeScript repository replaces the [previous JavaScript version of Data-Forge](https://github.com/data-forge/data-forge-js).
-
-## BREAKING CHANGES
-
-As of v1.6.9 the dependencies Sugar, Lodash and Moment have been factored out (or replaced with smaller dependencies). This more than halves the bundle size. Hopefully this won't cause any problems - but please log an issue if something changes that you weren't expecting.
-
-As of v1.3.0 file system support has been removed from the Data-Forge core API. This is after repeated issues from users trying to get Data-Forge working in the browser, especially under AngularJS 6.
-
-Functions for reading and writing files have been moved to the separate code library [Data-Forge FS](https://github.com/data-forge/data-forge-fs).
-
-If you are using the file read and write functions prior to 1.3.0 then your code will no longer work when you upgrade to 1.3.0. The fix is simple though, where usually you would just require in Data-Forge as follows:
-
-```javascript
-const dataForge = require('data-forge');
-```
-
-Now you must also require in the new library as well:
-
-```javascript
-const dataForge = require('data-forge');
-require('data-forge-fs');
-```
-
-Data-Forge FS augments Data-Forge core so that you can use the readFile/writeFile functions as in previous versions and as is shown in this readme and the guide.
-
-If you still have problems with AngularJS 6 please see this workaround:
-https://github.com/data-forge/data-forge-ts/issues/3#issuecomment-438580174
+[![Build Status](https://github.com/madnetter/data-forge-ts/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/madnetter/data-forge-ts)
+[![npm version](https://badge.fury.io/js/data-forge.svg)](https://badge.fury.io/js/@madnetter%2Fdata-forge.svg)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 ## Install
 
@@ -113,27 +87,13 @@ Please remember that you can't use data-forge-fs or the file system functions in
 - Build data pipeline that are evaluated lazily.
 - Inspired by Pandas and LINQ, so it might feel familiar!
 
-## Contributions
-
-Want a bug fixed or maybe to improve performance?
-
-Don't see your favourite feature?
-
-Need to add your favourite Pandas or LINQ feature?
-
-Please contribute and help improve this library for everyone!
-
-Fork it, make a change, submit a pull request. Want to chat? See my contact details at the end or reach out on Gitter.
-
-
-
 ## Platforms
 
-- Node.js (npm install --save data-forge data-forge-fs) ([see example here](https://github.com/data-forge/data-forge-examples-and-tests/tree/master/package-test/npm))
+- Node.js (npm install --save data-forge data-forge-fs) ([see example here](https://github.com/madnetter/data-forge-examples-and-tests/tree/master/package-test/npm))
 - Browser
-    - Via bower (bower install --save data-forge) ([see example here](https://github.com/data-forge/data-forge-examples-and-tests/tree/master/package-test/bower))
-    - Via Browserify ([see example here](https://github.com/data-forge/data-forge-examples-and-tests/tree/master/examples/2.%20plot%20-%20in%20browser))
-    - Via Webpack ([see example here](https://github.com/data-forge/data-forge-examples-and-tests/tree/master/examples/3.%20plot%20-%20in%20browser%20-%20with%20dates))
+    - Via bower (bower install --save data-forge) ([see example here](https://github.com/madnetter/data-forge-examples-and-tests/tree/master/package-test/bower))
+    - Via Browserify ([see example here](https://github.com/madnetter/data-forge-examples-and-tests/tree/master/examples/2.%20plot%20-%20in%20browser))
+    - Via Webpack ([see example here](https://github.com/madnetter/data-forge-examples-and-tests/tree/master/examples/3.%20plot%20-%20in%20browser%20-%20with%20dates))
 
 ## Documentation
 
@@ -144,25 +104,9 @@ Fork it, make a change, submit a pull request. Want to chat? See my contact deta
 - [FS API docs](https://data-forge.github.io/data-forge-fs/index.html)
 - [Data-Forge FS](https://github.com/data-forge/data-forge-fs/)
 - [Data-Forge Plot](https://github.com/data-forge/data-forge-plot/)
-- [Gitter](https://gitter.im/data-forge)
 
 ## Resources
 
 - [The Data Wrangler](http://www.the-data-wrangler.com/)
 - [Data Wrangling with JavaScript](http://bit.ly/2t2cJu2)
 - [Data-Forge Notebook](http://www.data-forge-notebook.com/)
-
-## Contact
-
-Please reach and tell me what you are doing with Data-Forge or how you'd like to see it improved.
-
-- Twitter: @codecapers
-- Email: ashley@codecapers.com.au
-- Linkedin: www.linkedin.com/in/ashleydavis75
-- Web: www.codecapers.com.au
-
-## Support the developer 
-
-<a target="_blank" href="http://www.codecapers.com.au/about#support-my-work">Click here to **support the developer.**</a>
-
-
