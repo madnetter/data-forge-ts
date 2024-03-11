@@ -18,29 +18,29 @@ export interface IIndex<IndexT> extends ISeries<number, IndexT> {
      * 
      * @returns Returns a string that specifies the type of the index.
      */
-    getType (): string;
+    getType(): string;
 
     /**
      * Get the less than operation for the index.
      * 
      * @returns Returns a function that can be used to compare a value against an index value.
      */
-    getLessThan (): PredicateFn;
+    getLessThan(): PredicateFn;
 
     /**
      * Get the less than or equal to operation for the index.
      * 
      * @returns Returns a function that can be used to compare a value against an index value.
      */
-    getLessThanOrEqualTo (): PredicateFn;
+    getLessThanOrEqualTo(): PredicateFn;
 
     /**
      * Get the greater than operation for the index.
      * 
      * @returns Returns a function that can be used to compare a value against an index value.
      */
-    getGreaterThan (): PredicateFn;
-    
+    getGreaterThan(): PredicateFn;
+
 }
 
 /**
@@ -62,7 +62,7 @@ export class Index<IndexT> extends Series<number, IndexT> implements IIndex<Inde
      * 
      * @returns Returns a string that specifies the type of the index.
      */
-    getType (): string {
+    getType(): string {
 
         if (!this._type) {
             //
@@ -84,7 +84,7 @@ export class Index<IndexT> extends Series<number, IndexT> implements IIndex<Inde
      * 
      * @returns Returns a function that can be used to compare a value against an index value.
      */
-    getLessThan (): PredicateFn {
+    getLessThan(): PredicateFn {
 
         switch (this.getType()) {
             case "date":
@@ -107,16 +107,16 @@ export class Index<IndexT> extends Series<number, IndexT> implements IIndex<Inde
      * 
      * @returns Returns a function that can be used to compare a value against an index value.
      */
-    getLessThanOrEqualTo (): PredicateFn {
+    getLessThanOrEqualTo(): PredicateFn {
         return (v1: any, v2: any) => !this.getGreaterThan()(v1, v2); //TODO: Should expand  this out.
     }
-    
+
     /**
      * Get the greater than operation for the index.
      * 
      * @returns Returns a function that can be used to compare a value against an index value.
      */
-    getGreaterThan (): PredicateFn {
+    getGreaterThan(): PredicateFn {
 
         switch (this.getType()) {
             case "date":

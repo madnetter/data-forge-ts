@@ -5,7 +5,7 @@ import t from "typy";
 // Various shared utility functions.
 //
 
-export function* mapIterable<InT, OutT> (items: Iterable<InT>, mapFn: (item: InT) => OutT): Iterable<OutT> {
+export function* mapIterable<InT, OutT>(items: Iterable<InT>, mapFn: (item: InT) => OutT): Iterable<OutT> {
     const iterator = items[Symbol.iterator]();
     while (true) {
         const result = iterator.next();
@@ -60,7 +60,7 @@ export function toMap2<InT, KeyT, ValueT>(items: Iterable<InT>, keySelector: (it
 //
 // Determine the type of a value.
 //
-export function determineType (value: any): string {
+export function determineType(value: any): string {
     if (value === undefined) {
         return "undefined";
     }
