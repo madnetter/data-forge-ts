@@ -6,61 +6,61 @@ import { ArrayIterable } from '../lib/iterables/array-iterable';
 import moment from "dayjs";
 
 describe('Series', () => {
-    
-	it('can bake series', () =>  {
+
+	it('can bake series', () => {
 
 		var series = new Series({
-            values: [10, 20],
-            index: [1, 2],
-        });
+			values: [10, 20],
+			index: [1, 2],
+		});
 		var baked = series.bake();
 
 		expect(baked).not.to.equal(series);
 	});
 
-	it('baking a baked series returns same', () =>  {
+	it('baking a baked series returns same', () => {
 
 		var series = new Series({
-            values: [10, 20],
-            index: [1, 2],
-        });
-        var baked = series.bake();
-        var rebaked = baked.bake();
+			values: [10, 20],
+			index: [1, 2],
+		});
+		var baked = series.bake();
+		var rebaked = baked.bake();
 
 		expect(rebaked).to.equal(baked);
-    });
-    
-    it('can inflate to dataframe', () => {
+	});
 
-        var series = new Series({
-            values: [10, 20],
-            index: [100, 200]
-        });
-        var dataframe = series.select(v => ({ V: v })).inflate();
-        expect(dataframe.toArray()).to.eql([
-            {
-                V: 10,
-            },
-            {
-                V: 20,
-            },
-        ]);
-        expect(dataframe.getIndex().toArray()).to.eql([100, 200]);
-        expect(dataframe.toPairs()).to.eql([
-            [ 100, { V: 10, }, ],
-            [ 200, { V: 20, }, ],
-        ]);
-    });
+	it('can inflate to dataframe', () => {
+
+		var series = new Series({
+			values: [10, 20],
+			index: [100, 200]
+		});
+		var dataframe = series.select(v => ({ V: v })).inflate();
+		expect(dataframe.toArray()).to.eql([
+			{
+				V: 10,
+			},
+			{
+				V: 20,
+			},
+		]);
+		expect(dataframe.getIndex().toArray()).to.eql([100, 200]);
+		expect(dataframe.toPairs()).to.eql([
+			[100, { V: 10, },],
+			[200, { V: 20, },],
+		]);
+	});
 
 	it('can inflate series to dataframe using selector', () => {
 
 		var series = new Series({ index: [0, 1, 2], values: ['A', 'B', 'C'] });
 		var dataFrame = series.inflate(value => {
-				return {
-					Col1: value,
-					Col2: value + value,
-				};
-			});
+			return {
+				Col1: value,
+				Col2: value + value,
+			};
+		});
 
 		expect(dataFrame.getColumnNames()).to.eql(["Col1", "Col2"]);
 		expect(dataFrame.toRows()).to.eql([
@@ -71,17 +71,17 @@ describe('Series', () => {
 
 	});
 
-    it('Series.toArray strips undefined values', () => {
+	it('Series.toArray strips undefined values', () => {
 
-        var series = new Series([10, undefined, 20, undefined]);
-        expect(series.toArray()).to.eql([10, 20]);
-    });
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toArray()).to.eql([10, 20]);
+	});
 
-    it('Series.toArray strips null values', () => {
+	it('Series.toArray strips null values', () => {
 
-        var series = new Series([10, null, 20, null]);
-        expect(series.toArray()).to.eql([10, 20]);
-    });
+		var series = new Series([10, null, 20, null]);
+		expect(series.toArray()).to.eql([10, 20]);
+	});
 
 	it('Series.toArray({includeNulls: true}) does not strip null values', () => {
 
@@ -107,72 +107,72 @@ describe('Series', () => {
 		expect(series.toArray({ includeNulls: false })).to.eql([10, 20]);
 	});
 
-    it('Series.toPairs strips undefined values', () => {
+	it('Series.toPairs strips undefined values', () => {
 
-        var series = new Series([10, undefined, 20, undefined]);
-        expect(series.toPairs()).to.eql([
-            [0, 10], 
-            [2, 20]
-        ]);
-    });
-
-    it('Series.toPairs strips null values', () => {
-
-        var series = new Series([10, null, 20, null]);
-        expect(series.toPairs()).to.eql([
-            [0, 10], 
-            [2, 20]
-        ]);
-    });
-
-    it('can skip values in a series', ()  => {
-
-        var series = new Series({
-            values: [1, 2, 3, 4, 5],
-            index: [0, 1, 2, 3, 4],
-        });
-        var result = series.skip(2);
-
-        expect(result.toArray()).to.eql([3, 4, 5]);
-        expect(result.getIndex().toArray()).to.eql([2, 3, 4]);
-        expect(result.toPairs()).to.eql([[2, 3], [3, 4], [4, 5]]);
-    });
-
-	it('can take', () =>  {
-		var series = new Series({ 
-            index: [0, 1, 2, 3], 
-            values: [100, 300, 200, 5] 
-        });
-        
-        var skipped = series.take(2);		
-		expect(skipped.getIndex().toArray()).to.eql([0, 1]);
-		expect(skipped.toArray()).to.eql([100, 300]);		
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toPairs()).to.eql([
+			[0, 10],
+			[2, 20]
+		]);
 	});
 
-	it('can filter', () =>  {
-		var series = new Series({ 
-            index: [0, 1, 2, 3], 
-            values: [100, 300, 200, 5] 
-        });
-        
-        var filtered = series.filter(value => {
-				return value >= 100 && value < 300;
-			});
-		expect(filtered.getIndex().toArray()).to.eql([0, 2]);
-		expect(filtered.toArray()).to.eql([100, 200]);		
-    });
+	it('Series.toPairs strips null values', () => {
 
-	it('can skip while', () =>  {
+		var series = new Series([10, null, 20, null]);
+		expect(series.toPairs()).to.eql([
+			[0, 10],
+			[2, 20]
+		]);
+	});
+
+	it('can skip values in a series', () => {
+
+		var series = new Series({
+			values: [1, 2, 3, 4, 5],
+			index: [0, 1, 2, 3, 4],
+		});
+		var result = series.skip(2);
+
+		expect(result.toArray()).to.eql([3, 4, 5]);
+		expect(result.getIndex().toArray()).to.eql([2, 3, 4]);
+		expect(result.toPairs()).to.eql([[2, 3], [3, 4], [4, 5]]);
+	});
+
+	it('can take', () => {
+		var series = new Series({
+			index: [0, 1, 2, 3],
+			values: [100, 300, 200, 5]
+		});
+
+		var skipped = series.take(2);
+		expect(skipped.getIndex().toArray()).to.eql([0, 1]);
+		expect(skipped.toArray()).to.eql([100, 300]);
+	});
+
+	it('can filter', () => {
+		var series = new Series({
+			index: [0, 1, 2, 3],
+			values: [100, 300, 200, 5]
+		});
+
+		var filtered = series.filter(value => {
+			return value >= 100 && value < 300;
+		});
+		expect(filtered.getIndex().toArray()).to.eql([0, 2]);
+		expect(filtered.toArray()).to.eql([100, 200]);
+	});
+
+	it('can skip while', () => {
 
 		var series = new Series({ index: [0, 1, 2, 3], values: [true, true, false, true] });
-        var skipped = series.skipWhile(value => value);
+		var skipped = series.skipWhile(value => value);
 		expect(skipped.toPairs()).to.eql([
 			[2, false],
 			[3, true],
 		]);
 	});
 
-	it('can skip until', () =>  {
+	it('can skip until', () => {
 
 		var series = new Series({ index: [0, 1, 2, 3], values: [false, false, true, false] });
 		var skipped = series.skipUntil(value => value);
@@ -182,7 +182,7 @@ describe('Series', () => {
 		]);
 	});
 
-	it('can take while', () =>  {
+	it('can take while', () => {
 
 		var series = new Series({ index: [0, 1, 2, 3], values: [true, true, false, true] });
 		var skipped = series.takeWhile(value => value);
@@ -192,7 +192,7 @@ describe('Series', () => {
 		]);
 	});
 
-	it('can take until', () =>  {
+	it('can take until', () => {
 
 		var series = new Series({ index: [0, 1, 2, 3], values: [false, false, true, false] });
 		var skipped = series.takeUntil(value => value);
@@ -200,13 +200,13 @@ describe('Series', () => {
 			[0, false],
 			[1, false],
 		]);
-    });
-    
-    it('can count number of elements', () => {
+	});
 
-        var series = new Series([10, 20, 30]);
-        expect(series.count()).to.eql(3);
-    });
+	it('can count number of elements', () => {
+
+		var series = new Series([10, 20, 30]);
+		expect(series.count()).to.eql(3);
+	});
 
 	it('can get first and last values', () => {
 
@@ -222,8 +222,8 @@ describe('Series', () => {
 		expect(() => {
 			series.first();
 		}).to.throw();
-    });
-    
+	});
+
 	it('getting last of empty series throws exception', () => {
 
 		var series = new Series();
@@ -231,12 +231,12 @@ describe('Series', () => {
 		expect(() => {
 			series.last();
 		}).to.throw();
-    });
+	});
 
 	it('can get value by index', () => {
 
-		var series = new Series({ 
-			index:  [100, 200, 300],
+		var series = new Series({
+			index: [100, 200, 300],
 			values: [10, 20, 30],
 		});
 
@@ -245,8 +245,8 @@ describe('Series', () => {
 
 	it('getting by index returns undefined when the requested index does not exist', () => {
 
-		var series = new Series({ 
-			index:  [100, 300],
+		var series = new Series({
+			index: [100, 300],
 			values: [10, 30],
 		});
 
@@ -258,45 +258,45 @@ describe('Series', () => {
 		var series = new Series();
 		expect(series.at(200)).to.eql(undefined);
 	});
-    
-    it('can get value by date index', () => {
 
-        var testDate = moment("2014-04-05").toDate();
+	it('can get value by date index', () => {
 
-        var serires = new Series({
-            index: [moment("2013-03-04").toDate(), testDate, moment("2015-06-06").toDate()],
-            values: [1, 2, 3],
-        });
-        expect(serires.at(testDate)).to.eql(2);
-    })
-    
-    it('can get head', () =>  {
+		var testDate = moment("2014-04-05").toDate();
+
+		var serires = new Series({
+			index: [moment("2013-03-04").toDate(), testDate, moment("2015-06-06").toDate()],
+			values: [1, 2, 3],
+		});
+		expect(serires.at(testDate)).to.eql(2);
+	})
+
+	it('can get head', () => {
 
 		var series = new Series(['A', 'B', 'C']);
 		var head = series.head(2);
 		expect(head.toArray()).to.eql(['A', 'B']);
 	});
 
-    it('can use negative with head to get all but the last X values', () =>  {
+	it('can use negative with head to get all but the last X values', () => {
 
 		var series = new Series(['A', 'B', 'C']);
 		var head = series.head(-1);
 		expect(head.toArray()).to.eql(['A', 'B']);
 	});
 
-    it('can get tail', () =>  {
+	it('can get tail', () => {
 
 		var series = new Series(['A', 'B', 'C']);
 		var tail = series.tail(2);
 		expect(tail.toArray()).to.eql(['B', 'C']);
-    });
+	});
 
-    it('can use negative with tail to get all but the first X values', () =>  {
+	it('can use negative with tail to get all but the first X values', () => {
 
 		var series = new Series(['A', 'B', 'C']);
-        var tail = series.tail(-1);
+		var tail = series.tail(-1);
 		expect(tail.toArray()).to.eql(['B', 'C']);
-    });
+	});
 
 	it('for each', () => {
 
@@ -314,73 +314,73 @@ describe('Series', () => {
 
 		var series = new Series({ values: [] });
 
-		expect(series.all(function (value) { 
-				return value === 200; 
-			})).to.eql(false);
+		expect(series.all(function (value) {
+			return value === 200;
+		})).to.eql(false);
 	});
 
 	it('all - no elements match', () => {
 
 		var series = new Series({ values: [1, 2, 3, 4] });
 
-		expect(series.all(function (value) { 
-				return value === 200; 
-			})).to.eql(false);
+		expect(series.all(function (value) {
+			return value === 200;
+		})).to.eql(false);
 	});
 
 	it('all - some elements match', () => {
 
 		var series = new Series({ values: [1, 3, 3, 4] });
 
-		expect(series.all(function (value) { 
-				return value === 3; 
-			})).to.eql(false);
+		expect(series.all(function (value) {
+			return value === 3;
+		})).to.eql(false);
 	});
 
 	it('all - all elements match', () => {
 
 		var series = new Series({ values: [5, 5, 5, 5] });
 
-		expect(series.all(function (value) { 
-				return value === 5; 
-			})).to.eql(true);
+		expect(series.all(function (value) {
+			return value === 5;
+		})).to.eql(true);
 	});
 
 	it('any - zero elements', () => {
 
 		var series = new Series({ values: [] });
 
-		expect(series.any(function (value) { 
-				return value === 200; 
-			})).to.eql(false);
+		expect(series.any(function (value) {
+			return value === 200;
+		})).to.eql(false);
 	});
 
 	it('any - no elements match', () => {
 
 		var series = new Series({ values: [1, 2, 3, 4] });
 
-		expect(series.any(function (value) { 
-				return value === 200; 
-			})).to.eql(false);
+		expect(series.any(function (value) {
+			return value === 200;
+		})).to.eql(false);
 	});
 
 	it('any - some elements match', () => {
 
 		var series = new Series({ values: [1, 3, 3, 4] });
 
-		expect(series.any(function (value) { 
-				return value === 3; 
-			})).to.eql(true);
+		expect(series.any(function (value) {
+			return value === 3;
+		})).to.eql(true);
 	});
 
 	it('any - all elements match', () => {
 
 		var series = new Series({ values: [5, 5, 5, 5] });
 
-		expect(series.any(function (value) { 
-				return value === 5; 
-			})).to.eql(true);
-	});	
+		expect(series.any(function (value) {
+			return value === 5;
+		})).to.eql(true);
+	});
 
 	it('any - with no predicate - no elements', () => {
 
@@ -391,53 +391,53 @@ describe('Series', () => {
 
 	it('any - with no predicate - has falsy elements', () => {
 
-		var series = new Series({ values: [ false, false, false ] });
+		var series = new Series({ values: [false, false, false] });
 
 		expect(series.any()).to.eql(true);
-    });
-    
+	});
+
 	it('any - with no predicate - elements exist', () => {
 
 		var series = new Series({ values: [5, 5, 5, 5] });
 
 		expect(series.any()).to.eql(true);
-	});	
+	});
 
 	it('none - zero elements', () => {
 
 		var series = new Series({ values: [] });
 
-		expect(series.none(function (value) { 
-				return value === 200; 
-			})).to.eql(true);
+		expect(series.none(function (value) {
+			return value === 200;
+		})).to.eql(true);
 	});
 
 	it('none - no elements match', () => {
 
 		var series = new Series({ values: [1, 2, 3, 4] });
 
-		expect(series.none(function (value) { 
-				return value === 200; 
-			})).to.eql(true);
+		expect(series.none(function (value) {
+			return value === 200;
+		})).to.eql(true);
 	});
 
 	it('none - some elements match', () => {
 
 		var series = new Series({ values: [1, 3, 3, 4] });
 
-		expect(series.none(function (value) { 
-				return value === 3; 
-			})).to.eql(false);
+		expect(series.none(function (value) {
+			return value === 3;
+		})).to.eql(false);
 	});
 
 	it('none - all elements match', () => {
 
 		var series = new Series({ values: [5, 5, 5, 5] });
 
-		expect(series.none(function (value) { 
-				return value === 5; 
-			})).to.eql(false);
-	});	
+		expect(series.none(function (value) {
+			return value === 5;
+		})).to.eql(false);
+	});
 
 	it('none - with no predicate - zero elements', () => {
 
@@ -449,13 +449,13 @@ describe('Series', () => {
 
 		var series = new Series({ values: [false, false, false] });
 		expect(series.none()).to.eql(false);
-    });
-    
+	});
+
 	it('none - with no predicate - has existing elements', () => {
 
 		var series = new Series({ values: [5, 5, 5, 5] });
 		expect(series.none()).to.eql(false);
-	});	
+	});
 
 	it('can get series starting at particular index - with integer index', () => {
 
@@ -463,12 +463,12 @@ describe('Series', () => {
 			index: [10, 20, 30],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.startAt(20);
 		expect(reduced.toPairs()).to.eql([
 			[20, 2],
 			[30, 3],
-		]); 	
+		]);
 	});
 
 	it('can get series starting before a particular index - with integer index', () => {
@@ -477,48 +477,48 @@ describe('Series', () => {
 			index: [10, 20, 30],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.startAt(15);
 		expect(reduced.toPairs()).to.eql([
 			[20, 2],
 			[30, 3],
-		]); 	
+		]);
 	});
 
 	it('can get series starting at particular index - with date index', () => {
 
 		var series = new Series({
 			index: [
-				new Date(2016, 5, 1), 
-				new Date(2016, 5, 5), 
+				new Date(2016, 5, 1),
+				new Date(2016, 5, 5),
 				new Date(2016, 5, 10),
 			],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.startAt(new Date(2016, 5, 5));
 		expect(reduced.toPairs()).to.eql([
 			[new Date(2016, 5, 5), 2],
 			[new Date(2016, 5, 10), 3],
-		]); 	
+		]);
 	});
 
 	it('can get series starting before a particular index - with date index', () => {
 
 		var series = new Series({
 			index: [
-				new Date(2016, 5, 1), 
-				new Date(2016, 5, 5), 
+				new Date(2016, 5, 1),
+				new Date(2016, 5, 5),
 				new Date(2016, 5, 10),
 			],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.startAt(new Date(2016, 5, 4));
 		expect(reduced.toPairs()).to.eql([
 			[new Date(2016, 5, 5), 2],
 			[new Date(2016, 5, 10), 3],
-		]); 	
+		]);
 	});
 
 	it('can get series ending at particular index - with integer index', () => {
@@ -527,12 +527,12 @@ describe('Series', () => {
 			index: [10, 20, 30],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.endAt(20);
 		expect(reduced.toPairs()).to.eql([
 			[10, 1],
 			[20, 2],
-		]); 	
+		]);
 	});
 
 	it('can get series ending before a particular index - with integer index', () => {
@@ -541,48 +541,48 @@ describe('Series', () => {
 			index: [10, 20, 30],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.endAt(25);
 		expect(reduced.toPairs()).to.eql([
 			[10, 1],
 			[20, 2],
-		]); 	
+		]);
 	});
 
 	it('can get series ending at particular index - with date index', () => {
 
 		var series = new Series({
 			index: [
-				new Date(2016, 5, 1), 
-				new Date(2016, 5, 5), 
+				new Date(2016, 5, 1),
+				new Date(2016, 5, 5),
 				new Date(2016, 5, 10),
 			],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.endAt(new Date(2016, 5, 5));
 		expect(reduced.toPairs()).to.eql([
 			[new Date(2016, 5, 1), 1],
 			[new Date(2016, 5, 5), 2],
-		]); 	
+		]);
 	});
 
 	it('can get series ending before a particular index - with date index', () => {
 
 		var series = new Series({
 			index: [
-				new Date(2016, 5, 1), 
-				new Date(2016, 5, 5), 
+				new Date(2016, 5, 1),
+				new Date(2016, 5, 5),
 				new Date(2016, 5, 10),
 			],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.endAt(new Date(2016, 5, 6));
 		expect(reduced.toPairs()).to.eql([
 			[new Date(2016, 5, 1), 1],
 			[new Date(2016, 5, 5), 2],
-		]); 	
+		]);
 	});
 
 	it('can get series before a particular index - with integer index', () => {
@@ -591,30 +591,30 @@ describe('Series', () => {
 			index: [10, 20, 30],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.before(25);
 		expect(reduced.toPairs()).to.eql([
 			[10, 1],
 			[20, 2],
-		]); 	
+		]);
 	});
 
 	it('can get series before a particular index - with date index', () => {
 
 		var series = new Series({
 			index: [
-				new Date(2016, 5, 1), 
-				new Date(2016, 5, 5), 
+				new Date(2016, 5, 1),
+				new Date(2016, 5, 5),
 				new Date(2016, 5, 10),
 			],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.before(new Date(2016, 5, 6));
 		expect(reduced.toPairs()).to.eql([
 			[new Date(2016, 5, 1), 1],
 			[new Date(2016, 5, 5), 2],
-		]); 	
+		]);
 	});
 
 	it('can get series after a particular index - with integer index', () => {
@@ -623,30 +623,30 @@ describe('Series', () => {
 			index: [10, 20, 30],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.after(15);
 		expect(reduced.toPairs()).to.eql([
 			[20, 2],
 			[30, 3],
-		]); 	
+		]);
 	});
 
 	it('can get series after a particular index - with date index', () => {
 
 		var series = new Series({
 			index: [
-				new Date(2016, 5, 1), 
-				new Date(2016, 5, 5), 
+				new Date(2016, 5, 1),
+				new Date(2016, 5, 5),
 				new Date(2016, 5, 10),
 			],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.after(new Date(2016, 5, 2));
 		expect(reduced.toPairs()).to.eql([
 			[new Date(2016, 5, 5), 2],
 			[new Date(2016, 5, 10), 3],
-		]); 	
+		]);
 	});
 
 	it('can get series between particular indices - with integer index', () => {
@@ -655,17 +655,17 @@ describe('Series', () => {
 			index: [10, 20, 30],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.between(11, 25);
 		expect(reduced.toPairs()).to.eql([
 			[20, 2],
-		]); 	
+		]);
 	});
 
 	it('can get slice of rows - with string indices', () => {
 
 		var series = new Series({
-			index: ["a", "b", "c", "d", "e"], 
+			index: ["a", "b", "c", "d", "e"],
 			values: [100, 300, 200, 5, 30],
 		});
 		var slice = series.between("b", "e");
@@ -675,32 +675,32 @@ describe('Series', () => {
 			["d", 5],
 			["e", 30],
 		]);
-    });
-        
+	});
+
 	it('can get series between particular indices - with date index', () => {
 
 		var series = new Series({
 			index: [
-				new Date(2016, 5, 1), 
-				new Date(2016, 5, 5), 
+				new Date(2016, 5, 1),
+				new Date(2016, 5, 5),
 				new Date(2016, 5, 10),
 			],
 			values: [1, 2, 3],
 		});
-		
+
 		var reduced = series.between(new Date(2016, 5, 2), new Date(2016, 5, 8));
 		expect(reduced.toPairs()).to.eql([
 			[new Date(2016, 5, 5), 2],
-		]); 	
-    });
-        
+		]);
+	});
+
 	it('can aggregate series with no seed', () => {
 
 		var series = new Series({ index: [0, 1, 2], values: [4, 8, 16] });
 
 		var agg = series.aggregate((prevValue, value) => {
-				return prevValue + value;
-			});
+			return prevValue + value;
+		});
 
 		expect(agg).to.eql(28);
 	});
@@ -710,8 +710,8 @@ describe('Series', () => {
 		var series = new Series({ index: [0, 1, 2], values: [4, 8, 16] });
 
 		var agg = series.aggregate(2, (prevValue, value) => {
-				return prevValue + value;
-			});
+			return prevValue + value;
+		});
 
 		expect(agg).to.eql(30);
 	});
@@ -732,31 +732,31 @@ describe('Series', () => {
 
 		expect(agg()).to.eql(30);
 	});
-        
+
 	it('throws exception if no function is passed to aggregate', () => {
 
 		var series = new Series({ index: [0, 1, 2], values: [4, 8, 16] });
 
 		expect(() => { series.aggregate(3) }).to.throw();
 		expect(() => { series.aggregate("joy") }).to.throw();
-		expect(() => { series.aggregate( undefined ) }).to.throw();
+		expect(() => { series.aggregate(undefined) }).to.throw();
 	});
 
-    it('reducing empty series with no seed results in undefined', () => {
+	it('reducing empty series with no seed results in undefined', () => {
 
 		const series = new Series();
 		const reduced = series.reduce((prev, value) => prev + value);
 		expect(reduced).to.eql(undefined);
-    });
+	});
 
-    it('reducing empty series with seed results in seed', () => {
+	it('reducing empty series with seed results in seed', () => {
 
 		const series = new Series();
 		const reduced = series.reduce((prev, value) => prev + value, 5);
 		expect(reduced).to.eql(5);
-    });
+	});
 
-    it('can reduce series with no seed', () => {
+	it('can reduce series with no seed', () => {
 
 		const series = new Series({ index: [0, 1, 2], values: [4, 8, 16] });
 		const reduced = series.reduce((prev, value) => prev + value);
@@ -769,30 +769,30 @@ describe('Series', () => {
 		const reduced = series.reduce((prev, value) => prev + value, 2);
 		expect(reduced).to.eql(30);
 	});
-       
+
 	it('throws exception if no function is passed to reduce', () => {
 
 		const series = new Series();
 		expect(() => (series.reduce as Function)()).to.throw();
-        expect(() => (series.reduce as Function)(3)).to.throw();
-        expect(() => (series.reduce as Function)(undefined)).to.throw();
+		expect(() => (series.reduce as Function)(3)).to.throw();
+		expect(() => (series.reduce as Function)(undefined)).to.throw();
 	});
 
 	it('can convert to javascript object', () => {
 
 		var series = new Series({
-            index: [0, 1], 
-            values: [
-                {
-                    Key: 'A',
-                    Value:100,
-                },
-                {
-                    Key: 'B',
-                    Value:200,
-                },
-            ]
-        });
+			index: [0, 1],
+			values: [
+				{
+					Key: 'A',
+					Value: 100,
+				},
+				{
+					Key: 'B',
+					Value: 200,
+				},
+			]
+		});
 
 		var obj = series.toObject(row => row.Key, row => row.Value);
 		expect(obj).to.eql({
@@ -803,23 +803,23 @@ describe('Series', () => {
 
 	it('can convert to javascript object - with duplicate keys', () => {
 
-        var series = new Series({
-            index: [0, 1, 2], 
-            values: [
-                {
-                    Key: 'A',
-                    Value:100,
-                },
-                {
-                    Key: 'B',
-                    Value:200,
-                },
-                {
-                    Key: 'A',
-                    Value:3,
-                },
-            ]
-        });
+		var series = new Series({
+			index: [0, 1, 2],
+			values: [
+				{
+					Key: 'A',
+					Value: 100,
+				},
+				{
+					Key: 'B',
+					Value: 200,
+				},
+				{
+					Key: 'A',
+					Value: 3,
+				},
+			]
+		});
 
 		var obj = series.toObject(row => row.Key, row => row.Value);
 		expect(obj).to.eql({
@@ -836,30 +836,30 @@ describe('Series', () => {
 		expect(series.getIndex().toArray()).to.eql([0, 1, 2]);
 		expect(reversed.toArray()).to.eql(['C', 'B', 'A']);
 		expect(reversed.getIndex().toArray()).to.eql([2, 1, 0]);
-    });
-    
+	});
+
 	it('can distinct items', () => {
 
-		var series = new Series({ 
-			index:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+		var series = new Series({
+			index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
 			values: [1, 1, 2, 1, 1, 2, 3, 4, 3, 3],
 		});
 
-        var collapsed = series.distinct();
-        expect(collapsed.toArray()).to.eql([1, 2, 3, 4]);
-        expect(collapsed.getIndex().toArray()).to.eql([0, 2, 6, 7]);
+		var collapsed = series.distinct();
+		expect(collapsed.toArray()).to.eql([1, 2, 3, 4]);
+		expect(collapsed.getIndex().toArray()).to.eql([0, 2, 6, 7]);
 		expect(collapsed.toPairs()).to.eql([
 			[0, 1],
 			[2, 2],
 			[6, 3],
 			[7, 4],
-        ]);
+		]);
 	});
 
 	it('can distinct items with custom selector', () => {
 
-		var series = new Series({ 
-			index:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+		var series = new Series({
+			index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
 			values: [{ A: 1 }, { A: 1 }, { A: 2 }, { A: 1 }, { A: 1 }, { A: 2 }, { A: 3 }, { A: 4 }, { A: 3 }, { A: 3 }],
 		});
 
@@ -874,7 +874,7 @@ describe('Series', () => {
 			[6, 3],
 			[7, 4],
 		]);
-    });
+	});
 
 	it('can truncate string values', () => {
 
@@ -899,8 +899,8 @@ describe('Series', () => {
 		var truncated = series.truncateStrings(20);
 
 		expect(truncated.toArray()).to.eql([1, new Date(2015, 1, 1)]);
-    });
-    
+	});
+
 	it('can insert pair at start of empty series', () => {
 
 		var series = new Series();
@@ -913,7 +913,7 @@ describe('Series', () => {
 	it('can insert pair at start of series with existing items', () => {
 
 		var series = new Series({
-			index:  [1,  2],
+			index: [1, 2],
 			values: [10, 11],
 		});
 		var modified = series.insertPair([20, 100]);
@@ -937,7 +937,7 @@ describe('Series', () => {
 	it('can append pair to series with existing items', () => {
 
 		var series = new Series({
-			index:  [1,  2],
+			index: [1, 2],
 			values: [10, 11],
 		});
 		var appended = series.appendPair([20, 100]);
@@ -948,10 +948,10 @@ describe('Series', () => {
 		]);
 	});
 
-    it("can remove values by index", () => {
+	it("can remove values by index", () => {
 
 		const series = new Series({
-			index:  [1,  2, 3],
+			index: [1, 2, 3],
 			values: [10, 11, 12],
 		});
 		const modified = series.remove(2);
@@ -959,12 +959,12 @@ describe('Series', () => {
 			[1, 10],
 			[3, 12],
 		]);
-    });
+	});
 
 	it('can fill gaps in series - fill forward', () => {
 
 		var seriesWithGaps = new Series({
-			index:  [1,  2,  6,  7,  10, 11],
+			index: [1, 2, 6, 7, 10, 11],
 			values: [10, 11, 12, 13, 14, 15],
 		});
 
@@ -972,14 +972,14 @@ describe('Series', () => {
 			(pairA: [number, number], pairB: [number, number]) => pairB[0] - pairA[0] > 1,
 			(pairA: [number, number], pairB: [number, number]) => {
 				var gapSize = pairB[0] - pairA[0];
-                var numEntries = gapSize - 1;
-                var output: [number, number][] = [];
-                for (var i = 0; i < numEntries; ++i) {
-                    output.push([
-                        pairA[0] + i + 1, 
-                        pairA[1]
-                    ]);
-                }
+				var numEntries = gapSize - 1;
+				var output: [number, number][] = [];
+				for (var i = 0; i < numEntries; ++i) {
+					output.push([
+						pairA[0] + i + 1,
+						pairA[1]
+					]);
+				}
 				return output;
 			}
 		);
@@ -1019,111 +1019,111 @@ describe('Series', () => {
 		var defaulted = series.defaultIfEmpty([1, 2]);
 		expect(defaulted.toArray()).to.eql([5, 6]);
 	});
-   
-    it('empty series produces zero buckets', () => {
 
-        expect((new Series()).bucket(5).count()).to.eql(0);
-    });
+	it('empty series produces zero buckets', () => {
 
-    it('series with one value produces a single bucket', () => {
+		expect((new Series()).bucket(5).count()).to.eql(0);
+	});
 
-        expect((new Series([5])).bucket(10).count()).to.eql(1);
-    });
+	it('series with one value produces a single bucket', () => {
 
-    it('can divide values into buckets', () => {
+		expect((new Series([5])).bucket(10).count()).to.eql(1);
+	});
 
-        var series = new Series([1, 1, 3, 4, 5, 5, 6, 9, 10, 10]);
-        expect(series.bucket(5).toArray()).to.eql([
-            {
-                Value:1, 
-                Bucket: 0,
-                Min: 1,
-                Mid: 2.125,
-                Max: 3.25,
-            },
+	it('can divide values into buckets', () => {
 
-            {
-                Value:1, 
-                Bucket: 0,
-                Min: 1,
-                Mid: 2.125,
-                Max: 3.25,
-            },
-            {
-                Value:3, 
-                Bucket: 0,
-                Min: 1,
-                Mid: 2.125,
-                Max: 3.25,
-            },
+		var series = new Series([1, 1, 3, 4, 5, 5, 6, 9, 10, 10]);
+		expect(series.bucket(5).toArray()).to.eql([
+			{
+				Value: 1,
+				Bucket: 0,
+				Min: 1,
+				Mid: 2.125,
+				Max: 3.25,
+			},
 
-            {
-                Value:4, 
-                Bucket: 1,
-                Min: 3.25,
-                Mid: 4.375,
-                Max: 5.5,
-            },
-            {
-                Value:5, 
-                Bucket: 1,
-                Min: 3.25,
-                Mid: 4.375,
-                Max: 5.5,
-            },
-            {
-                Value:5, 
-                Bucket: 1,
-                Min: 3.25,
-                Mid: 4.375,
-                Max: 5.5,
-            },
+			{
+				Value: 1,
+				Bucket: 0,
+				Min: 1,
+				Mid: 2.125,
+				Max: 3.25,
+			},
+			{
+				Value: 3,
+				Bucket: 0,
+				Min: 1,
+				Mid: 2.125,
+				Max: 3.25,
+			},
 
-            {
-                Value:6, 
-                Bucket: 2,
-                Min: 5.5,
-                Mid: 6.625,
-                Max: 7.75,
-            },
+			{
+				Value: 4,
+				Bucket: 1,
+				Min: 3.25,
+				Mid: 4.375,
+				Max: 5.5,
+			},
+			{
+				Value: 5,
+				Bucket: 1,
+				Min: 3.25,
+				Mid: 4.375,
+				Max: 5.5,
+			},
+			{
+				Value: 5,
+				Bucket: 1,
+				Min: 3.25,
+				Mid: 4.375,
+				Max: 5.5,
+			},
 
-            {
-                Value:9,
-                Bucket: 3,
-                Min: 7.75,
-                Mid: 8.875,
-                Max: 10,
-            },
+			{
+				Value: 6,
+				Bucket: 2,
+				Min: 5.5,
+				Mid: 6.625,
+				Max: 7.75,
+			},
 
-            {
-                Value:10,
-                Bucket: 4,
-                Min: 10,
-                Mid: 11.125,
-                Max: 12.25,
-            },
-            {
-                Value:10,
-                Bucket: 4,
-                Min: 10,
-                Mid: 11.125,
-                Max: 12.25,
-            },
-        ]);
-    });
-    
-    it('can round numbers', () => {
-        const rounded = new Series([10.125, 0.0178]);
-        expect(rounded.round(2).toArray()).to.eql([10.13, 0.02]);
-    });
+			{
+				Value: 9,
+				Bucket: 3,
+				Min: 7.75,
+				Mid: 8.875,
+				Max: 10,
+			},
 
-    it('round ignores non-numbers', () => {
-        const rounded = new Series(["10.125", "0.0178"]);
-        expect(rounded.round(2).toArray()).to.eql(["10.125", "0.0178"]);
-    });
+			{
+				Value: 10,
+				Bucket: 4,
+				Min: 10,
+				Mid: 11.125,
+				Max: 12.25,
+			},
+			{
+				Value: 10,
+				Bucket: 4,
+				Min: 10,
+				Mid: 11.125,
+				Max: 12.25,
+			},
+		]);
+	});
 
-    it("cumulative sum", () => {
-        const series = new Series([1, 2, 3, 4, 5]);
-        expect(series.cumsum().toArray()).to.eql([1, 3, 6, 10, 15]);
-    });
+	it('can round numbers', () => {
+		const rounded = new Series([10.125, 0.0178]);
+		expect(rounded.round(2).toArray()).to.eql([10.13, 0.02]);
+	});
+
+	it('round ignores non-numbers', () => {
+		const rounded = new Series(["10.125", "0.0178"]);
+		expect(rounded.round(2).toArray()).to.eql(["10.125", "0.0178"]);
+	});
+
+	it("cumulative sum", () => {
+		const series = new Series([1, 2, 3, 4, 5]);
+		expect(series.cumsum().toArray()).to.eql([1, 3, 6, 10, 15]);
+	});
 });

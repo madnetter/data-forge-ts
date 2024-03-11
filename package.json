@@ -1,6 +1,6 @@
 {
-  "name": "data-forge",
-  "version": "1.10.1",
+  "name": "@madnetter/data-forge",
+  "version": "1.10.2",
   "description": "JavaScript data transformation and analysis toolkit inspired by Pandas and LINQ.",
   "module": "dist/esm/index.esm.js",
   "main": "build/index.js",
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/data-forge/data-forge-ts.git"
+    "url": "https://github.com/madnetter/data-forge-ts.git"
   },
   "keywords": [
     "data-wrangling",
@@ -56,12 +56,12 @@
     "data-science",
     "data-clensing"
   ],
-  "author": "ashley@codecapers.com.au",
+  "author": "max@madnetter.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/data-forge/data-forge-ts/issues"
+    "url": "https://github.com/madnetter/data-forge-ts/issues"
   },
-  "homepage": "https://github.com/data-forge/data-forge-ts#readme",
+  "homepage": "https://github.com/madnetter/data-forge-ts#readme",
   "dependencies": {
     "@data-forge/serialization": "^1.0.0",
     "dayjs": "^1.8.12",

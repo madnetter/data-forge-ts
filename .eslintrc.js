@@ -12,6 +12,5 @@ module.exports = {
         'no-var': 1,
         '@typescript-eslint/no-this-alias': 0,
         '@typescript-eslint/ban-ts-comment': 0,
-        '@typescript-eslint/ban-types': 1
-    }
+        '@typescript-eslint/ban-types': 1    }
   };
