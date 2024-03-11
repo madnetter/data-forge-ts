@@ -394,7 +394,7 @@ export interface ISeries<IndexT = number, ValueT = any> extends Iterable<ValueT>
     * const values = series.toArray();
     * </pre>
     */
-    toArray(options? : { includeNulls: boolean }): ValueT[];
+    toArray(options?: { includeNulls?: boolean }): ValueT[];
 
     /**
      * Retreive the index, values pairs from the series as an array.
@@ -408,7 +408,7 @@ export interface ISeries<IndexT = number, ValueT = any> extends Iterable<ValueT>
      * const pairs = series.toPairs();
      * </pre>
      */
-    toPairs(): ([IndexT, ValueT])[];
+    toPairs(options?: { includeNulls?: boolean }): ([IndexT, ValueT])[];
 
     /**
      * Convert the series to a JavaScript object.
@@ -2937,10 +2937,12 @@ export class Series<IndexT = number, ValueT = any> implements ISeries<IndexT, Va
      * const pairs = series.toPairs();
      * </pre>
      */
-    toPairs(): ([IndexT, ValueT])[] {
+    toPairs(options?: { includeNulls?: boolean }): ([IndexT, ValueT])[] {
         const pairs = [];
         for (const pair of this.getContent().pairs) {
-            if (pair[1] !== undefined && pair[1] !== null) {
+            if (options && options.includeNulls && pair[1] !== undefined) {
+                pairs.push(pair);
+            } else if (pair[1] !== undefined && pair[1] !== null) {
                 pairs.push(pair);
             }
         }

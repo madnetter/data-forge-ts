@@ -125,6 +125,44 @@ describe('Series', () => {
 		]);
 	});
 
+	it('Series.toPairs({includeNulls: true}) does not strip null values', () => {
+
+		var series = new Series([10, null, 20, null]);
+		expect(series.toPairs({includeNulls: true})).to.eql([
+			[0, 10],
+			[1, null],
+			[2, 20],
+			[3, null],
+		]);
+	});
+
+	it('Series.toPairs({includeNulls: true}) strips undefined values', () => {
+
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toPairs({includeNulls: true})).to.eql([
+			[0, 10],
+			[2, 20]
+		]);
+	});
+
+	it('Series.toPairs({includeNulls: false}) strips null values', () => {
+
+		var series = new Series([10, null, 20, null]);
+		expect(series.toPairs({includeNulls: false})).to.eql([
+			[0, 10],
+			[2, 20]
+		]);
+	});
+
+	it('Series.toPairs({includeNulls: false}) strips undefined values', () => {
+
+		var series = new Series([10, undefined, 20, undefined]);
+		expect(series.toPairs({includeNulls: false})).to.eql([
+			[0, 10],
+			[2, 20]
+		]);
+	});
+
 	it('can skip values in a series', () => {
 
 		var series = new Series({
